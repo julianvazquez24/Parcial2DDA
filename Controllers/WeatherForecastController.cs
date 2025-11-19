@@ -17,7 +17,7 @@ namespace Parcial2DDA.Controllers
         {
             _logger = logger;
         }
-
+        // hola probando push desde el fork
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
