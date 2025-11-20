@@ -15,10 +15,12 @@ namespace Parcial2DDA.Controllers
     public class MedicionController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IReporteMediciones _reportes;
 
-        public MedicionController(AppDbContext context)
+        public MedicionController(AppDbContext context, IReporteMediciones reportes)
         {
             _context = context;
+            _reportes = reportes;
         }
         
 
@@ -84,59 +86,44 @@ namespace Parcial2DDA.Controllers
 
 
         [HttpGet("reportes/total")]
-        public IActionResult getRecuentoReportes()
+        public async Task<IActionResult> getRecuentoReportes()
         {
-            int cantidadReportes = _context.Reportes.Count();
-            if (cantidadReportes > 0)
-            {
-                RecuentoReportesDTO cantidadReportesDTO = new RecuentoReportesDTO
-                {
-                    total_mediciones_completadas = cantidadReportes,
-                };
 
-                return Ok(cantidadReportesDTO);
+            RecuentoReportesDTO cantidadReportesDTO =await  _reportes.traerCantidadReportes();
+
+            if (cantidadReportesDTO == null)
+            {
+                return BadRequest("no hay reportes");
             }
-            return BadRequest("no hay reportes");
+            return Ok(cantidadReportesDTO);
         }
 
         [HttpGet("reportes/maxima_diferencia_peso")]
-        public IActionResult getMaxDiferenciaPeso()
+        public async Task<IActionResult> getMaxDiferenciaPeso()
         {
-            decimal maxDiferenciaPeso = _context.Reportes.Max(r => r.DiferenciaPeso);
+     
+            DiferenciaPesoDTO diferenciaPesoDTO = await  _reportes.traerMaxDiferenciaPeso();
 
-            if (maxDiferenciaPeso != null)
+            if (diferenciaPesoDTO == null)
             {
-                DiferenciaPesoDTO maxdiferenciaPesoDTO = new DiferenciaPesoDTO
-                {
-                    maxima_diferencia_peso = maxDiferenciaPeso,
-                };
-
-                return Ok(maxdiferenciaPesoDTO);
+                return BadRequest("no hay reportes");
             }
+            return Ok(diferenciaPesoDTO);
 
-            return BadRequest("no hay reportes");
+
+
         }
 
         [HttpGet("reportes/maximo_tiempo")]
-        public IActionResult getMaxDiferenciaTiempo()
+        public async Task<IActionResult> getMaxDiferenciaTiempo()
         {
-            int tiempoEnSegundos = _context.Reportes.Max(r => r.DiferenciaTiempo);
-            if (tiempoEnSegundos == null)
+            DiferenciaTiempoDTO diferenciaTiempoDTO = await _reportes.traerMaxDiferenciaTiempo();
+            if( diferenciaTiempoDTO == null)
             {
                 return BadRequest("no hay reportes");
             }
 
-            int tiempoEnMinutos = tiempoEnSegundos / 60;
-            int tiempoEnHoras = tiempoEnMinutos / 60;
-            string diferenciaTiempoTotal = $"{tiempoEnHoras} horas, {tiempoEnMinutos - (tiempoEnHoras * 60)} minutos, {tiempoEnSegundos - (tiempoEnMinutos * 60)} segundos";
-
-          
-            DiferenciaTiempoDTO maxdiferenciaTiempoDTO = new DiferenciaTiempoDTO
-            {
-                maximo_tiempo = diferenciaTiempoTotal,
-            };
-
-            return Ok(maxdiferenciaTiempoDTO);
+            return Ok(diferenciaTiempoDTO);
         }
 
 
