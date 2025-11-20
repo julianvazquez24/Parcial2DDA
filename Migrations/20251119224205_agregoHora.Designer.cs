@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parcial2DDA.Data;
 
@@ -11,9 +12,11 @@ using Parcial2DDA.Data;
 namespace Parcial2DDA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251119224205_agregoHora")]
+    partial class agregoHora
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,25 +50,6 @@ namespace Parcial2DDA.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Mediciones");
-                });
-
-            modelBuilder.Entity("Parcial2DDA.Models.Reporte", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("DiferenciaPeso")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("DiferenciaTiempo")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Reportes");
                 });
 #pragma warning restore 612, 618
         }

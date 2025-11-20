@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parcial2DDA.Data;
 
@@ -11,9 +12,11 @@ using Parcial2DDA.Data;
 namespace Parcial2DDA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251119230312_agregarReportes")]
+    partial class agregarReportes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,10 +60,10 @@ namespace Parcial2DDA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("DiferenciaPeso")
+                    b.Property<decimal>("diferenciaPeso")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("DiferenciaTiempo")
+                    b.Property<int>("diferenciaTiempo")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
